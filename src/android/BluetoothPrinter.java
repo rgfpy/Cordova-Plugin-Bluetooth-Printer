@@ -40,6 +40,7 @@ public class BluetoothPrinter extends CordovaPlugin {
 	private int readBufferPosition;
 	int counter;
 	private volatile boolean stopWorker;
+    private byte[] LINE_FEED = new byte[]{0x0A};
 
 	private Bitmap bitmap;
 
@@ -50,6 +51,7 @@ public class BluetoothPrinter extends CordovaPlugin {
 		if (action.equals("list")) {
 			listBT(callbackContext);
 			return true;
+
 		} else if (action.equals("connect")) {
 			String name = args.getString(0);
 			if (findBT(callbackContext, name)) {
@@ -63,6 +65,7 @@ public class BluetoothPrinter extends CordovaPlugin {
 				callbackContext.error("Bluetooth Device Not Found: " + name);
 			}
 			return true;
+
 		} else if (action.equals("disconnect")) {
             try {
                 disconnectBT(callbackContext);
@@ -71,8 +74,8 @@ public class BluetoothPrinter extends CordovaPlugin {
                 e.printStackTrace();
             }
             return true;
-        }
-    else if (action.equals("print") || action.equals("printImage")) {
+
+        } else if (action.equals("print") || action.equals("printImage")) {
 			try {
 				String msg = args.getString(0);
 				printImage(callbackContext, msg);
@@ -81,18 +84,18 @@ public class BluetoothPrinter extends CordovaPlugin {
 				e.printStackTrace();
 			}
 			return true;
-		}
-		else if (action.equals("printText")) {
-    			try {
-    				String msg = args.getString(0);
-    				printText(callbackContext, msg);
-    			} catch (IOException e) {
-    				Log.e(LOG_TAG, e.getMessage());
-    				e.printStackTrace();
-    			}
-    			return true;
-    		}
-        else if (action.equals("printPOSCommand")) {
+
+		} else if (action.equals("printText")) {
+            try {
+                String msg = args.getString(0);
+                printText(callbackContext, msg);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, e.getMessage());
+                e.printStackTrace();
+            }
+            return true;
+
+        } else if (action.equals("printPOSCommand")) {
 			try {
 				String msg = args.getString(0);
                 printPOSCommand(callbackContext, hexStringToBytes(msg));
@@ -101,7 +104,11 @@ public class BluetoothPrinter extends CordovaPlugin {
 				e.printStackTrace();
 			}
 			return true;
-		}
+
+		} else if(action.equals("printLn")) {
+            printLn(callbackContext, args.getInt(0));
+        }
+
 		return false;
 	}
 
@@ -177,7 +184,13 @@ public class BluetoothPrinter extends CordovaPlugin {
 		return false;
 	}
 
-	// Tries to open a connection to the bluetooth printer device
+
+	/**
+	 * Tries to open a connection to the bluetooth printer device
+	 * @param callbackContext Cordova context
+	 * @return boolean
+	 * @throws IOException
+	 */
 	private boolean connectBT(CallbackContext callbackContext) throws IOException {
 		try {
 			// Standard SerialPortService ID
@@ -199,8 +212,11 @@ public class BluetoothPrinter extends CordovaPlugin {
 		return false;
 	}
 
-	// After opening a connection to bluetooth printer device,
-	// we have to listen and check if a data were sent to be printed.
+
+	/**
+	 * After opening a connection to bluetooth printer device,
+	 * we have to listen and check if a data were sent to be printed.
+	 */
 	private void beginListenForData() {
 		try {
 			final Handler handler = new Handler();
@@ -231,6 +247,9 @@ public class BluetoothPrinter extends CordovaPlugin {
 											}
 										});
                                         */
+                                        final String data = new String(encodedBytes, "US-ASCII");
+                                        readBufferPosition = 0;
+
 									} else {
 										readBuffer[readBufferPosition++] = b;
 									}
@@ -250,11 +269,18 @@ public class BluetoothPrinter extends CordovaPlugin {
 		}
 	}
 
-	//This will send data to bluetooth printer
+
+	/**
+	 * This will send data to bluetooth printer
+	 * @param callbackContext Cordova context
+	 * @param msg texto recibido
+	 * @return boolean
+	 * @throws IOException
+	 */
 	private boolean printText(CallbackContext callbackContext, String msg) throws IOException {
 		try {
-
 			mmOutputStream.write(msg.getBytes());
+            //mmOutputStream.write(LINE_FEED);
 
 			// tell the user data were sent
 			//Log.d(LOG_TAG, "Data Sent");
@@ -269,6 +295,27 @@ public class BluetoothPrinter extends CordovaPlugin {
 		}
 		return false;
 	}
+
+
+    /**
+     * Imprimir saltos de lineas
+     * @param cantVeces cant lineas a repetir
+     */
+	private void printLn(CallbackContext callbackContext, int cantVeces) {
+        try {
+            int i;
+            for(i=0; i<cantVeces; i++) {
+                mmOutputStream.write(LINE_FEED);
+            }
+
+            callbackContext.success("Line break printed");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage());
+        }
+    }
+
 
 	//This will send data to bluetooth printer
     private boolean printImage(CallbackContext callbackContext, String msg) throws IOException {
@@ -376,21 +423,6 @@ public class BluetoothPrinter extends CordovaPlugin {
     private static byte charToByte(char c) {
 		return (byte) "0123456789abcdef".indexOf(c);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	private byte[] getImage(Bitmap bitmap) {
