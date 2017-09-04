@@ -1,0 +1,33 @@
+{
+  "version": "0.0.1-dev",
+  "name": "cordova-plugin-bluetooth-printer",
+  "cordova_name": "BluetoothPrinter",
+  "platforms": [
+    "android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "description": "A cordova plugin for bluetooth printer for android platform, which support text printing and POS printing.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer.git"
+  },
+  "keywords": [
+    "cordova",
+    "bluetooth",
+    "printer",
+    "pos",
+    "text",
+    "barcode",
+    "thermal",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Syed Rehanuddin",
+  "license": "Apache 2.0",
+  "homepage": "sistepar.com"
+}
