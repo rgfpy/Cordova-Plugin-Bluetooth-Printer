@@ -30,7 +30,7 @@ BTPrinter.list(function(data){
 ```
 
 
-Connect printer
+* First invoke this option to Connect printer
 
 ```
 BTPrinter.connect(function(data){
@@ -69,7 +69,7 @@ BTPrinter.disconnect(function(data){
 ```
 
 
-Print simple string
+Print simple string (After invoke BTPrinter.connect())
 
 ```
 BTPrinter.printText(function(data){
