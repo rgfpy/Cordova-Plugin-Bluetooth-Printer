@@ -26,7 +26,7 @@ BTPrinter.list(function(data){
     },function(err){
         console.log("Error");
         console.log(err);
-    })
+    });
 ```
 
 
@@ -35,11 +35,11 @@ Connect printer
 ```
 BTPrinter.connect(function(data){
 	console.log("Success");
-	console.log(data)
+	console.log(data);
 },function(err){
 	console.log("Error");
-	console.log(err)
-}, "PrinterName")
+	console.log(err);
+}, "PrinterName");
 ```
 
 
@@ -48,11 +48,11 @@ Disconnect printer
 ```
 BTPrinter.disconnect(function(data){
 	console.log("Success");
-	console.log(data)
+	console.log(data);
 },function(err){
 	console.log("Error");
-	console.log(err)
-}, "PrinterName")
+	console.log(err);
+}, "PrinterName");
 ```
 
 
@@ -61,11 +61,11 @@ Disconnect printer
 ```
 BTPrinter.disconnect(function(data){
 	console.log("Success");
-	console.log(data)
+	console.log(data);
 },function(err){
 	console.log("Error");
-	console.log(err)
-})
+	console.log(err);
+});
 ```
 
 
@@ -74,11 +74,11 @@ Print simple string
 ```
 BTPrinter.printText(function(data){
     console.log("Success");
-    console.log(data)
+    console.log(data);
 },function(err){
     console.log("Error");
-    console.log(err)
-}, "String to Print")
+    console.log(err);
+}, "String to Print");
 ```
 
 
@@ -87,21 +87,21 @@ Print image
 ```
 BTPrinter.printText(function(data){
     console.log("Success");
-    console.log(data)
+    console.log(data);
 },function(err){
     console.log("Error");
-    console.log(err)
-}, "Image Base64 String")
+    console.log(err);
+}, "Image Base64 String");
 ```
 
 ```
 BTPrinter.print(function(data){
     console.log("Success");
-    console.log(data)
+    console.log(data);
 },function(err){
     console.log("Error");
-    console.log(err)
-}, "Base64 String of Image")
+    console.log(err);
+}, "Base64 String of Image");
 ```
 
 
@@ -110,10 +110,10 @@ POS printing
 ```
 BTPrinter.printPOSCommand(function(data){
     console.log("Success");
-    console.log(data)
+    console.log(data);
 },function(err){
     console.log("Error");
-    console.log(err)
-}, "0C")
+    console.log(err);
+}, "0C");
 //OC is a POS command for page feed
 ```
