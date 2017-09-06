@@ -115,8 +115,8 @@ public class BluetoothPrinter extends CordovaPlugin {
 
     //This will return the array list of paired bluetooth printers
 	private void listBT(CallbackContext callbackContext) {
-		BluetoothAdapter mBluetoothAdapter = null;
-		String errMsg = null;
+		BluetoothAdapter mBluetoothAdapter;
+		String errMsg;
 		try {
 			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 			if (mBluetoothAdapter == null) {
